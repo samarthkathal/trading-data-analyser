@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_07_24_121931) do
-  create_table "historical_positions", id: false, force: :cascade do |t|
+  create_table "historical_positions", force: :cascade do |t|
     t.integer "trader_id", null: false
     t.integer "instrument_id", null: false
     t.integer "leverage", null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_121931) do
   create_table "instruments", id: false, force: :cascade do |t|
     t.string "type", null: false
     t.string "name", null: false
-    t.string "id", null: false
+    t.string "inst_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
