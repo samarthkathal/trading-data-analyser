@@ -50,3 +50,6 @@ group :development do
   gem 'rubocop-rails'
   gem 'solargraph'
 end
+
+gem 'google_drive'
+gem 'httparty'

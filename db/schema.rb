@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_24_121931) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
   create_table "historical_positions", force: :cascade do |t|
-    t.integer "trader_id", null: false
-    t.integer "instrument_id", null: false
+    t.string "trader_id", null: false
+    t.string "instrument_id", null: false
     t.integer "leverage", null: false
     t.decimal "margin", null: false
     t.decimal "pnl", null: false
@@ -25,14 +25,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_121931) do
     t.datetime "close_time", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["instrument_id"], name: "index_historical_positions_on_instrument_id"
-    t.index ["trader_id"], name: "index_historical_positions_on_trader_id"
   end
 
   create_table "instruments", id: false, force: :cascade do |t|
-    t.string "type", null: false
+    t.string "instrument_id", null: false
     t.string "name", null: false
-    t.string "inst_id", null: false
+    t.decimal "contract_multiplier"
+    t.string "contract_type"
+    t.decimal "contract_value"
+    t.string "contract_currency"
+    t.string "settle_currency"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["instrument_id"], name: "index_instruments_on_instrument_id", unique: true
+  end
+
+  create_table "trader_instruments", force: :cascade do |t|
+    t.string "trader_id", null: false
+    t.string "instrument_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -47,19 +57,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_121931) do
     t.decimal "yield_ratio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["unique_name"], name: "index_traders_on_unique_name", unique: true
   end
 
-  create_table "traders_instruments", force: :cascade do |t|
-    t.integer "trader_id", null: false
-    t.integer "instrument_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["instrument_id"], name: "index_traders_instruments_on_instrument_id"
-    t.index ["trader_id"], name: "index_traders_instruments_on_trader_id"
-  end
-
-  add_foreign_key "historical_positions", "instruments"
-  add_foreign_key "historical_positions", "traders"
-  add_foreign_key "traders_instruments", "instruments"
-  add_foreign_key "traders_instruments", "traders"
+  add_foreign_key "historical_positions", "instruments", primary_key: "instrument_id"
+  add_foreign_key "historical_positions", "traders", primary_key: "unique_name"
+  add_foreign_key "trader_instruments", "instruments", primary_key: "instrument_id"
+  add_foreign_key "trader_instruments", "traders", primary_key: "unique_name"
 end
