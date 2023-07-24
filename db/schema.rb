@@ -50,7 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
   create_table "traders", id: false, force: :cascade do |t|
     t.string "unique_name", null: false
     t.string "name", null: false
-    t.string "nickname"
     t.decimal "aum"
     t.decimal "pnl"
     t.decimal "win_ratio"

@@ -5,7 +5,6 @@ class CreateTradersTable < ActiveRecord::Migration[7.0]
       t.index :unique_name, unique: true
 
       t.string :name, null: false
-      t.string :nickname
       t.decimal :aum
       t.decimal :pnl
       t.decimal :win_ratio
