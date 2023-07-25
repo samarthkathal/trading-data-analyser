@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
   create_table "historical_positions", force: :cascade do |t|
+    t.integer "unique_id", null: false
     t.string "trader_id", null: false
     t.string "instrument_id", null: false
     t.integer "leverage", null: false
