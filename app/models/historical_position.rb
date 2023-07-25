@@ -5,8 +5,8 @@ class HistoricalPosition < ApplicationRecord
   # Associations
 
   # not required
-  belongs_to :instrument, dependent: :restrict_with_error
-  belongs_to :trader, dependent: :restrict_with_error
+  belongs_to :instrument, dependent: :destroy_async
+  belongs_to :trader, dependent: :destroy_async
 
   # Validations
   validates :leverage, :margin, :pnl, :margin_mode, :open_avg_price, presence: true
