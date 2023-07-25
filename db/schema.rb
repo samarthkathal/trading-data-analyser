@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_25_212911) do
   create_table "historical_positions", force: :cascade do |t|
     t.integer "unique_id", null: false
     t.string "trader_id", null: false
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
     t.datetime "close_time", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["unique_id"], name: "index_historical_positions_on_unique_id", unique: true
   end
 
   create_table "instruments", id: false, force: :cascade do |t|
@@ -57,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
     t.decimal "yield_ratio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_scrapped_at"
     t.index ["unique_name"], name: "index_traders_on_unique_name", unique: true
   end
 
