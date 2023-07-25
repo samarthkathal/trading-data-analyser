@@ -85,6 +85,8 @@ GEM
     diff-lcs (1.5.0)
     e2mmap (0.1.0)
     erubi (1.12.0)
+    ethon (0.16.0)
+      ffi (>= 1.15.0)
     faraday (1.10.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -108,6 +110,7 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
+    ffi (1.15.5)
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-apis-core (0.11.1)
@@ -282,6 +285,8 @@ GEM
     tilt (2.1.0)
     timeout (0.3.2)
     trailblazer-option (0.1.2)
+    typhoeus (1.4.0)
+      ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -308,6 +313,7 @@ DEPENDENCIES
   rubocop-rails
   solargraph
   sqlite3 (~> 1.4)
+  typhoeus
   tzinfo-data
 
 RUBY VERSION

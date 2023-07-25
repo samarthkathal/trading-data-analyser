@@ -53,3 +53,4 @@ end
 
 gem 'google_drive'
 gem 'httparty'
+gem 'typhoeus'
