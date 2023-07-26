@@ -10,7 +10,7 @@ class Trader < ApplicationRecord
   has_many :historical_positions, dependent: :destroy_async
 
   # Validations
-  validates :name, :unique_name, presence: true
+  validates :unique_name, presence: true
 
   def update_historical_positions
     scrapping = true
