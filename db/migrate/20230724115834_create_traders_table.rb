@@ -10,6 +10,7 @@ class CreateTradersTable < ActiveRecord::Migration[7.0]
       t.decimal :win_ratio
       t.decimal :yield_ratio
 
+      t.datetime :last_scrapped_at
       t.timestamps
     end
   end

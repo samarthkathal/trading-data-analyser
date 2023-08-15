@@ -10,9 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_25_212911) do
-  create_table "historical_positions", force: :cascade do |t|
-    t.integer "unique_id", null: false
+ActiveRecord::Schema[7.0].define(version: 2023_07_24_170632) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "historical_positions", id: false, force: :cascade do |t|
+    t.bigint "unique_id", null: false
     t.string "trader_id", null: false
     t.string "instrument_id", null: false
     t.integer "leverage", null: false
@@ -56,9 +59,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_212911) do
     t.decimal "pnl"
     t.decimal "win_ratio"
     t.decimal "yield_ratio"
+    t.datetime "last_scrapped_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "last_scrapped_at"
     t.index ["unique_name"], name: "index_traders_on_unique_name", unique: true
   end
 

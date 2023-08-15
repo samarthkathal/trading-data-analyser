@@ -1,6 +1,6 @@
 class HistoricalPosition < ApplicationRecord
   self.table_name = :historical_positions
-  self.primary_key = :id
+  self.primary_key = :unique_id
 
   # Associations
 

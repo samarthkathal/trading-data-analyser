@@ -100,18 +100,47 @@ namespace :scrape do
       page += 1
     end
 
+    pp "total traders fetched #{all_traders.count}"
+    pp "total new traders: #{all_traders.count - Trader.count}"
     Trader.upsert_all(all_traders, unique_by: :unique_name)
   end
 end
 namespace :scrape do
   task historical_positions: :environment do
-    unique_names = Trader.where(last_scrapped_at: nil).pluck(:unique_name) - HistoricalPosition.distinct.pluck(:trader_id)
+    # unique_names = Trader.where(last_scrapped_at: nil).pluck(:unique_name) - HistoricalPosition.distinct.pluck(:trader_id)
 
+    # unique_names = Trader.where('aum > 0')
+    #                .and(Trader.where.not(last_scrapped_at: Date.today.all_day))
+    #                .pluck(:unique_name)
+    unique_names = Trader.where('aum > 0')
+                   .pluck(:unique_name)
+
+    pp "scrapping #{unique_names.count} traders"
     unique_names.each do |trader_id|
       trader = Trader.find(trader_id)
+      pp "current trader name: #{trader.name}"
       trader.update_historical_positions
       trader.last_scrapped_at = Time.now
       trader.save!
     end
   end
 end
+
+"
+t = traders
+hp = a trader's historical_positions
+
+then
+
+order hp by opened at -> ordered_open_hp
+order hp by closed at -> ordered_close_hp
+
+
+res = Hash.new
+
+for(int i = 0, i < ordered_open_hp.length; i++)
+{
+  res[]
+}
+
+"

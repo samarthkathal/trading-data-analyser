@@ -1,8 +1,6 @@
 class CreateHistoricalPositionsTable < ActiveRecord::Migration[7.0]
   def change
-    create_table :historical_positions do |t|
-      # t.references :trader, null: false, foreign_key: true
-      # t.references :instrument, null: false, foreign_key: true
+    create_table :historical_positions, id: false, primary_key: :unique_id do |t|
       t.bigint :unique_id, null: false
       t.string :trader_id, null: false
       t.string :instrument_id, null: false
@@ -21,6 +19,7 @@ class CreateHistoricalPositionsTable < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
+    add_index :historical_positions, :unique_id, unique: true
     add_foreign_key :historical_positions, :instruments, column: "instrument_id", primary_key: "instrument_id"
     add_foreign_key :historical_positions, :traders, column: "trader_id", primary_key: "unique_name"
   end

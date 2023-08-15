@@ -17,9 +17,10 @@ class Trader < ApplicationRecord
     @trader_positions = nil
     params = {
       t: current_timestamp,
-      size: 50,
+      size: 100,
       uniqueName: unique_name,
     }
+    
 
     while scrapping
       if all_positions.count.positive?
@@ -34,6 +35,8 @@ class Trader < ApplicationRecord
       all_positions.concat(current_positions)
     end
 
+    pp "#{self.name} => #{all_positions.count}"
+
     historical_positions.upsert_all(all_positions, unique_by: :unique_id) if all_positions.count.positive?
   end
 
@@ -45,7 +48,7 @@ class Trader < ApplicationRecord
         unique_id: position[:id],
         trader_id: unique_name,
         instrument_id: position[:instId],
-        leverage: position[:leverage].to_i,
+        leverage: position[:lever].to_i,
         margin: position[:margin].to_f,
         pnl: position[:pnl].to_f,
         margin_mode: position[:mgnMode],
@@ -68,3 +71,18 @@ class Trader < ApplicationRecord
 
   def current_timestamp = (Time.now.to_f * 1000).to_i
 end
+
+
+# select * from historical_positions hp where t.unique_name IN (select distinct (trader_id) from historical_positions hp where hp.margin_mode = "isolated") AND hp.margin_mode = "cross" AND hp.trader_id = (SELECT unique_name FROM 'traders' t where t.aum != 0 AND t.aum >= 1000 AND t.aum <= 200000 AND t.win_ratio >= .85) limit 0,30
+
+
+# select distinct (trader_id) from historical_positions hp where hp.margin_mode = "isolated" limit 10
+
+
+
+# select * from traders t where t.unique_name IN (select distinct (trader_id) from historical_positions hp where hp.margin_mode = "isolated") 
+# AND  t.aum != 0 AND t.aum >= 100000 AND t.win_ratio >= .85 limit 0,30
+
+
+# select * from traders t inner join 
+
