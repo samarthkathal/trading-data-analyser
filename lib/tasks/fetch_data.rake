@@ -25,7 +25,7 @@ def traders
       aum: trader[:aum].to_f,
       pnl: trader[:pnl].to_f,
       win_ratio: trader[:winRatio].to_f,
-      yield_ratio: trader[:yieldRatio].to_f,
+      yield_ratio: trader[:yieldRatio].to_f
     }
   end
 end
@@ -56,7 +56,7 @@ namespace :scrape do
   task instruments: :environment do
     params = {
       t: current_timestamp,
-      instType: "SWAP",
+      instType: "SWAP"
     }
 
     response = HTTParty.get(instruments_endpoint, query: params)
@@ -70,7 +70,7 @@ namespace :scrape do
         contract_value: instrument[:ctVal].to_f,
         contract_currency: instrument[:ctValCcy],
         instrument_id: instrument[:instId],
-        settle_currency: instrument[:settleCcy],
+        settle_currency: instrument[:settleCcy]
       }
     end
 
@@ -89,7 +89,7 @@ namespace :scrape do
         t: current_timestamp,
         size: 20,
         sort: :desc,
-        start: page,
+        start: page
       }
 
       response = HTTParty.get(traders_endpoint, query: params)
@@ -102,6 +102,8 @@ namespace :scrape do
 
     pp "total traders fetched #{all_traders.count}"
     pp "total new traders: #{all_traders.count - Trader.count}"
+    # require 'pry'
+    # binding.pry
     Trader.upsert_all(all_traders, unique_by: :unique_name)
   end
 end
@@ -109,18 +111,19 @@ namespace :scrape do
   task historical_positions: :environment do
     # unique_names = Trader.where(last_scrapped_at: nil).pluck(:unique_name) - HistoricalPosition.distinct.pluck(:trader_id)
 
-    # unique_names = Trader.where('aum > 0')
-    #                .and(Trader.where.not(last_scrapped_at: Date.today.all_day))
-    #                .pluck(:unique_name)
-    unique_names = Trader.where('aum > 0')
-                   .pluck(:unique_name)
+    unique_names = Trader.where("aum > 0")
+      .and(Trader.where.not(last_scrapped_at: Time.zone.today.all_day))
+      .pluck(:unique_name)
+
+    # unique_names = Trader.where("aum > 0")
+    #   .pluck(:unique_name)
 
     pp "scrapping #{unique_names.count} traders"
     unique_names.each do |trader_id|
       trader = Trader.find(trader_id)
       pp "current trader name: #{trader.name}"
       trader.update_historical_positions
-      trader.last_scrapped_at = Time.now
+      trader.last_scrapped_at = Time.zone.now
       trader.save!
     end
   end
